@@ -185,13 +185,6 @@ export async function enqueueMetaLeadEvent(params: {
   if (!eventId) return { queued: false, sent: false };
 
   await pgInsertMetaCapiEvent(eventId, envelope);
-  const sendResult = await sendEnvelope(envelope);
-  if (sendResult.ok) {
-    await pgMarkMetaCapiEventSuccess(eventId);
-    return { queued: true, sent: true };
-  }
-
-  await pgMarkMetaCapiEventFailed(eventId, 1, sendResult.error ?? "Meta CAPI send failed", 15);
   return { queued: true, sent: false };
 }
 

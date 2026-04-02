@@ -27,6 +27,27 @@ export default function SubmissionSuccessPage() {
           </div>
         </section>
       </main>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            (() => {
+              try {
+                const params = new URLSearchParams(window.location.search);
+                const debug = params.get('debug_submit_timing') === '1' || sessionStorage.getItem('trk_debug_submit_timing') === '1';
+                if (!debug) return;
+                const raw = sessionStorage.getItem('lead_submit_perf');
+                if (!raw) return;
+                const parsed = JSON.parse(raw);
+                const elapsed = Date.now() - Number(parsed?.startedAt || 0);
+                if (Number.isFinite(elapsed) && elapsed > 0) {
+                  console.info(JSON.stringify({ msg: 'lead_submit_client_timing', elapsed_ms: elapsed, lead_id: parsed?.leadId || '' }));
+                }
+                sessionStorage.removeItem('lead_submit_perf');
+              } catch {}
+            })();
+          `,
+        }}
+      />
     </>
   );
 }

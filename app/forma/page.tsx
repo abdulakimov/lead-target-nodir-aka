@@ -1,4 +1,4 @@
-﻿import Image from "next/image";
+import Image from "next/image";
 import LeadForm from "../components/LeadForm";
 import { readLandingContent } from "../lib/content";
 import "../page.css";

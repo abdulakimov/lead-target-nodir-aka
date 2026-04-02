@@ -275,6 +275,11 @@ h1 {
   box-shadow: 0 12px 24px rgba(16, 53, 86, 0.16);
 }
 
+.ui-dropdown[data-dropdown="region"] .ui-dropdown-menu,
+.ui-dropdown[data-dropdown="district"] .ui-dropdown-menu {
+  max-height: 440px;
+}
+
 .ui-dropdown.is-open .ui-dropdown-menu {
   display: block;
 }

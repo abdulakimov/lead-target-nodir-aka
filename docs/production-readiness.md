@@ -31,8 +31,8 @@
 ## Reliability
 - Lead writes are lock-protected in Redis to reduce race conditions.
 - Bitrix sync is retryable through `POST /api/internal/bitrix-retry`.
-- Docker compose includes `retry-cron` service (1-minute loop) that calls retry endpoint.
-- If you deploy without docker compose, set external cron (every 1 minute):
+- Docker compose includes `retry-cron` service (5-second loop) that calls retry endpoint.
+- If you deploy without docker compose, set external cron (every 5-10 seconds):
   - Header: `x-internal-secret: <INTERNAL_SYNC_SECRET>`
 
 ## Deployment verification

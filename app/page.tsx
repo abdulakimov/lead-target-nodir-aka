@@ -14,7 +14,7 @@ export default function Page() {
           <a className="logo" href="#top" aria-label="Robbit bosh sahifa">
             <Image className="site-logo" src="/robbit-logo.webp" alt="Robbit Akademiyasi" width={220} height={56} priority sizes="220px" />
           </a>
-          <a className="cta desktop-cta" href="/sinov-darsiga-yozilish">
+          <a className="cta desktop-cta" href="/forma">
             {content.heroTopCta}
           </a>
         </div>
@@ -34,7 +34,7 @@ export default function Page() {
                   </span>
                 ))}
               </div>
-              <a className="cta" href="/sinov-darsiga-yozilish">
+              <a className="cta" href="/forma">
                 {content.heroPrimaryCta}
               </a>
             </article>
@@ -130,7 +130,7 @@ export default function Page() {
             <div className="final-box">
               <h2>{content.finalTitle}</h2>
               <p>{content.finalDescription}</p>
-              <a className="cta" href="/sinov-darsiga-yozilish">
+              <a className="cta" href="/forma">
                 {content.finalCta}
               </a>
             </div>
@@ -140,7 +140,7 @@ export default function Page() {
 
       <div className="floating">
         <p>{content.floatingText}</p>
-        <a className="cta" href="/sinov-darsiga-yozilish">
+        <a className="cta" href="/forma">
           {content.floatingCta}
         </a>
       </div>
@@ -157,7 +157,7 @@ export default function Page() {
               }
               if (!tracked.toString()) return;
 
-              document.querySelectorAll('a[href="/sinov-darsiga-yozilish"]').forEach((link) => {
+              document.querySelectorAll('a[href="/forma"]').forEach((link) => {
                 try {
                   const url = new URL(link.getAttribute('href') || '', window.location.origin);
                   tracked.forEach((value, key) => {

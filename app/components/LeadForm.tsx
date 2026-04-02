@@ -44,6 +44,7 @@ export default function LeadForm({ id, copy }: Props) {
       const parentInput = root.querySelector('input[name="parent_name"]');
       const phoneInput = root.querySelector('input[name="phone"]');
       const leadIdInput = root.querySelector('input[name="lead_id"]');
+      const externalClickIdInput = root.querySelector('input[name="external_click_id"]');
       const submitButton = root.querySelector('button[type="submit"]');
       const fbpInput = root.querySelector('input[name="fbp"]');
       const fbcInput = root.querySelector('input[name="fbc"]');
@@ -54,8 +55,24 @@ export default function LeadForm({ id, copy }: Props) {
       const utmContentInput = root.querySelector('input[name="utm_content"]');
       const utmTermInput = root.querySelector('input[name="utm_term"]');
       const sourceUrlInput = root.querySelector('input[name="source_url"]');
+      const submitTextDefault = ${JSON.stringify(copy.submitText)};
+      const submitTextLoading = 'Yuborilmoqda...';
 
       const districtMenu = districtDropdown ? districtDropdown.querySelector('[data-menu]') : null;
+      const makeLeadId = () => 'site_' + Date.now() + '_' + Math.random().toString(36).slice(2, 10);
+      const setSubmitLoading = (isLoading) => {
+        if (!submitButton) return;
+        if (isLoading) {
+          submitButton.disabled = true;
+          submitButton.setAttribute('aria-busy', 'true');
+          submitButton.setAttribute('data-submitting', 'true');
+          submitButton.textContent = submitTextLoading;
+        } else {
+          submitButton.removeAttribute('aria-busy');
+          submitButton.removeAttribute('data-submitting');
+          submitButton.textContent = submitTextDefault;
+        }
+      };
 
       const params = new URLSearchParams(window.location.search);
       const refParams = (() => {
@@ -98,8 +115,11 @@ export default function LeadForm({ id, copy }: Props) {
       };
 
       if (leadIdInput) {
-        const leadId = readTrackedParam('lead_id') || readTrackedParam('id') || '';
-        if (leadId) leadIdInput.value = leadId;
+        leadIdInput.value = makeLeadId();
+      }
+
+      if (externalClickIdInput) {
+        externalClickIdInput.value = readTrackedParam('lead_id') || readTrackedParam('id') || '';
       }
 
       const getCookie = (name) => {
@@ -140,6 +160,17 @@ export default function LeadForm({ id, copy }: Props) {
           const referrerUrl = document.referrer || '';
           const currentHasUtm = Boolean(utmSource || utmMedium || utmCampaign || utmContent || utmTerm);
           sourceUrlInput.value = currentHasUtm ? currentUrl : (referrerUrl || currentUrl);
+        }
+      }
+
+      {
+        const prefetchRahmat = () => {
+          fetch('/rahmat', { method: 'GET', credentials: 'same-origin', cache: 'force-cache' }).catch(() => {});
+        };
+        if (window.requestIdleCallback) {
+          window.requestIdleCallback(prefetchRahmat, { timeout: 1200 });
+        } else {
+          setTimeout(prefetchRahmat, 120);
         }
       }
 
@@ -413,6 +444,11 @@ export default function LeadForm({ id, copy }: Props) {
       if (submitButton) submitButton.disabled = true;
 
       form.addEventListener('submit', (event) => {
+        if (submitButton && submitButton.getAttribute('data-submitting') === 'true') {
+          event.preventDefault();
+          return;
+        }
+
         syncFlow();
         if (submitButton && submitButton.disabled) {
           event.preventDefault();
@@ -431,7 +467,42 @@ export default function LeadForm({ id, copy }: Props) {
           event.preventDefault();
           const firstInvalid = root.querySelector('[data-dropdown].is-invalid [data-trigger]');
           if (firstInvalid) firstInvalid.focus();
+          setSubmitLoading(false);
+          return;
         }
+
+        if (leadIdInput && !leadIdInput.value) {
+          leadIdInput.value = makeLeadId();
+        }
+
+        const leadId = leadIdInput ? String(leadIdInput.value || '').trim() : '';
+        const debugSubmitTiming = params.get('debug_submit_timing') === '1' || readStorage('debug_submit_timing') === '1';
+        if (debugSubmitTiming) {
+          writeStorage('debug_submit_timing', '1');
+          try {
+            performance.mark('lead_submit_click');
+            sessionStorage.setItem(
+              'lead_submit_perf',
+              JSON.stringify({
+                startedAt: Date.now(),
+                leadId,
+                path: window.location.pathname,
+              }),
+            );
+          } catch {}
+        }
+        if (leadId) {
+          const eventId = 'lead.' + leadId;
+          try {
+            if (typeof window.__trackMetaLead === 'function') {
+              window.__trackMetaLead(eventId);
+            } else if (typeof window.fbq === 'function') {
+              window.fbq('track', 'Lead', {}, { eventID: eventId });
+            }
+          } catch {}
+        }
+
+        setSubmitLoading(true);
       });
     })();
   `;
@@ -442,6 +513,7 @@ export default function LeadForm({ id, copy }: Props) {
       <p className="lead-note">{copy.note}</p>
       <form className="lead-form" action="/api/lead/submit" method="post">
         <input type="hidden" name="lead_id" defaultValue="" />
+        <input type="hidden" name="external_click_id" defaultValue="" />
         <input type="hidden" name="fbp" defaultValue="" />
         <input type="hidden" name="fbc" defaultValue="" />
         <input type="hidden" name="fbclid" defaultValue="" />

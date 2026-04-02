@@ -137,6 +137,12 @@ async function scheduleRetry(id: string, seconds: number): Promise<void> {
   await redis.zAdd(RETRY_ZSET_KEY, [{ score: ts, value: id }]);
 }
 
+export async function enqueueLeadSync(id: string, delaySeconds = 0): Promise<void> {
+  const cleanId = id.trim();
+  if (!cleanId) return;
+  await scheduleRetry(cleanId, Math.max(0, delaySeconds));
+}
+
 async function trySync(record: LeadRecord): Promise<LeadRecord> {
   if (record.website_data.length === 0) {
     record.sync.status = "pending";
@@ -170,7 +176,7 @@ async function trySync(record: LeadRecord): Promise<LeadRecord> {
   return record;
 }
 
-export async function upsertFbData(id: string, payload: MetaLeadPayload): Promise<LeadRecord> {
+export async function upsertFbData(id: string, payload: MetaLeadPayload, enqueueSync = true): Promise<LeadRecord> {
   const cleanId = id.trim();
   const fallbackLeadId = await findWebsiteLeadMatchForFbPayload(payload);
   const effectiveId = fallbackLeadId || cleanId;
@@ -180,13 +186,16 @@ export async function upsertFbData(id: string, payload: MetaLeadPayload): Promis
     if (record.fb_data.length > 20) {
       record.fb_data = record.fb_data.slice(-20);
     }
-    const synced = await trySync(record);
-    await saveRecord(synced);
-    return synced;
+    record.sync.status = "pending";
+    await saveRecord(record);
+    if (enqueueSync) {
+      await enqueueLeadSync(effectiveId, 0);
+    }
+    return record;
   });
 }
 
-export async function upsertWebsiteData(id: string, payload: WebsiteLeadData): Promise<LeadRecord> {
+export async function upsertWebsiteData(id: string, payload: WebsiteLeadData, enqueueSync = true): Promise<LeadRecord> {
   const cleanId = id.trim();
   return withLeadLock(cleanId, async () => {
     const record = await getRecord(cleanId);
@@ -194,9 +203,12 @@ export async function upsertWebsiteData(id: string, payload: WebsiteLeadData): P
     if (record.website_data.length > 20) {
       record.website_data = record.website_data.slice(-20);
     }
-    const synced = await trySync(record);
-    await saveRecord(synced);
-    return synced;
+    record.sync.status = "pending";
+    await saveRecord(record);
+    if (enqueueSync) {
+      await enqueueLeadSync(cleanId, 0);
+    }
+    return record;
   });
 }
 

@@ -74,7 +74,7 @@ docker image prune -f
 - `app` - Next.js app
 - `postgres` - persistent DB (`postgres_data` volume)
 - `redis` - queue/cache (`redis_data` volume)
-- `retry-cron` - har 60 sekundda `/api/internal/bitrix-retry` ni chaqiradi
+- `retry-cron` - har 5 sekundda `/api/internal/bitrix-retry` ni chaqiradi
 
 ## 7. Tekshiruv checklist
 1. `docker compose ps` da hamma container `Up`.

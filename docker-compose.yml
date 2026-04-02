@@ -84,7 +84,7 @@ services:
       - |
         while true; do
           curl -fsS -X POST "http://app:5000/api/internal/bitrix-retry" -H "x-internal-secret: $$INTERNAL_SYNC_SECRET" >/dev/null || true;
-          sleep 60;
+          sleep 5;
         done
     restart: unless-stopped
 

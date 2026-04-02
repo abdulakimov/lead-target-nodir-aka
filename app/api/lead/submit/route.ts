@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
-import { upsertWebsiteData } from "../../../lib/server/lead-store";
+import { performance } from "node:perf_hooks";
+import { enqueueLeadSync, upsertWebsiteData } from "../../../lib/server/lead-store";
 import { enqueueMetaLeadEvent } from "../../../lib/server/meta-capi";
 import type { WebsiteLeadData } from "../../../lib/server/types";
 
@@ -9,6 +10,14 @@ function asString(value: FormDataEntryValue | null): string {
 
 function sanitizeLeadId(value: string): string {
   return value.replace(/[^A-Za-z0-9_-]/g, "").slice(0, 64);
+}
+
+function isInternalLeadId(value: string): boolean {
+  return value.startsWith("site_");
+}
+
+function sanitizeExternalClickId(value: string): string {
+  return value.replace(/[^A-Za-z0-9_:-]/g, "").slice(0, 128);
 }
 
 function generateLeadId(): string {
@@ -38,10 +47,18 @@ function isSafeText(value: string, maxLen: number): boolean {
 }
 
 export async function POST(request: Request) {
+  const requestId = crypto.randomUUID();
+  const t0 = performance.now();
   const formData = await request.formData();
+  const tAfterParse = performance.now();
 
   const submittedLeadId = sanitizeLeadId(asString(formData.get("lead_id")));
-  const leadId = submittedLeadId || generateLeadId();
+  const leadId = submittedLeadId && isInternalLeadId(submittedLeadId) ? submittedLeadId : generateLeadId();
+  const externalFromLeadField = isInternalLeadId(submittedLeadId) ? "" : submittedLeadId;
+  const externalClickId =
+    sanitizeExternalClickId(asString(formData.get("external_click_id"))) ||
+    sanitizeExternalClickId(externalFromLeadField) ||
+    sanitizeExternalClickId(asString(formData.get("id")));
   const sourceUrlFromForm = asString(formData.get("source_url"));
   const referer = request.headers.get("referer") ?? "";
   const origin = request.headers.get("origin") ?? "";
@@ -57,6 +74,7 @@ export async function POST(request: Request) {
   const regionName = asString(formData.get("region_name"));
   const preferredBranch = asString(formData.get("preferred_branch"));
   const phone = normalizePhone(asString(formData.get("phone")));
+  const tAfterValidateInputRead = performance.now();
 
   if (
     !isSafeText(parentName, 120) ||
@@ -66,11 +84,37 @@ export async function POST(request: Request) {
     !isSafeText(preferredBranch, 120) ||
     !phone
   ) {
-    return new Response("Invalid form data", { status: 400 });
+    const totalMs = performance.now() - t0;
+    const parseMs = tAfterParse - t0;
+    const validateMs = tAfterValidateInputRead - tAfterParse;
+    console.info(
+      JSON.stringify({
+        msg: "lead_submit",
+        request_id: requestId,
+        lead_id: leadId,
+        status: 400,
+        timings_ms: {
+          parse: Number(parseMs.toFixed(2)),
+          validate: Number(validateMs.toFixed(2)),
+          persist: 0,
+          enqueue_bitrix: 0,
+          enqueue_capi: 0,
+          total: Number(totalMs.toFixed(2)),
+        },
+      }),
+    );
+    return new Response("Invalid form data", {
+      status: 400,
+      headers: {
+        "Server-Timing": `parse;dur=${parseMs.toFixed(2)}, validate;dur=${validateMs.toFixed(2)}, persist;dur=0, enqueue_bitrix;dur=0, enqueue_capi;dur=0, total;dur=${totalMs.toFixed(2)}`,
+        "X-Request-Id": requestId,
+      },
+    });
   }
 
   const websiteData: WebsiteLeadData = {
     lead_id: leadId,
+    external_click_id: externalClickId || undefined,
     parent_name: parentName,
     phone,
     child_age: childAge,
@@ -89,22 +133,54 @@ export async function POST(request: Request) {
     utm_content: utmContent || undefined,
     utm_term: utmTerm || undefined,
   };
+  const tAfterValidate = performance.now();
 
-  const record = await upsertWebsiteData(leadId, websiteData);
-  const latestFb = record.fb_data[record.fb_data.length - 1] ?? null;
+  await upsertWebsiteData(leadId, websiteData, false);
+  const tAfterPersist = performance.now();
+  await enqueueLeadSync(leadId, 0);
+  const tAfterBitrixQueue = performance.now();
 
   const forwardedFor = request.headers.get("x-forwarded-for") ?? "";
   const clientIp = forwardedFor.split(",")[0]?.trim() || undefined;
   await enqueueMetaLeadEvent({
     leadId,
     website: websiteData,
-    latestFb,
+    latestFb: null,
     clientIp,
     userAgent: request.headers.get("user-agent") ?? undefined,
   });
+  const tAfterMetaQueue = performance.now();
+
+  const parseMs = tAfterParse - t0;
+  const validateMs = tAfterValidate - tAfterParse;
+  const persistMs = tAfterPersist - tAfterValidate;
+  const enqueueBitrixMs = tAfterBitrixQueue - tAfterPersist;
+  const enqueueCapiMs = tAfterMetaQueue - tAfterBitrixQueue;
+  const totalMs = tAfterMetaQueue - t0;
+
+  console.info(
+    JSON.stringify({
+      msg: "lead_submit",
+      request_id: requestId,
+      lead_id: leadId,
+      status: 303,
+      timings_ms: {
+        parse: Number(parseMs.toFixed(2)),
+        validate: Number(validateMs.toFixed(2)),
+        persist: Number(persistMs.toFixed(2)),
+        enqueue_bitrix: Number(enqueueBitrixMs.toFixed(2)),
+        enqueue_capi: Number(enqueueCapiMs.toFixed(2)),
+        total: Number(totalMs.toFixed(2)),
+      },
+    }),
+  );
 
   return new Response(null, {
     status: 303,
-    headers: { Location: "/submission-success" },
+    headers: {
+      Location: "/rahmat",
+      "Server-Timing": `parse;dur=${parseMs.toFixed(2)}, validate;dur=${validateMs.toFixed(2)}, persist;dur=${persistMs.toFixed(2)}, enqueue_bitrix;dur=${enqueueBitrixMs.toFixed(2)}, enqueue_capi;dur=${enqueueCapiMs.toFixed(2)}, total;dur=${totalMs.toFixed(2)}`,
+      "X-Request-Id": requestId,
+    },
   });
 }

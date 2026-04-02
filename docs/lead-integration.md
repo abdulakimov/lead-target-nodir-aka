@@ -22,14 +22,23 @@ Additional sync metadata is stored under `sync` to support retries and idempoten
 2. `POST /api/meta/webhook`
 - Accepts Meta payload (direct lead payload or `entry[].changes[].value`).
 - Saves payload into `fb_data`.
-- If `website_data` exists for the same `id`, sends merged data to Bitrix.
+- Enqueues lead for background sync to Bitrix.
 
 3. `POST /api/lead/submit`
 - Receives website form.
 - Reads hidden `lead_id` (from `?lead_id=` query param).
 - Saves into `website_data`.
-- If `fb_data` exists for the same `id`, sends merged data to Bitrix.
-- Also queues/sends Meta Conversions API `Lead` event with dedup `event_id = lead.{lead_id}`.
+- Enqueues lead for background sync to Bitrix.
+- Queues Meta Conversions API `Lead` event with dedup `event_id = lead.{lead_id}`.
+- Browser side Meta Pixel `Lead` is also sent with the same `eventID` for CAPI dedup.
+- Returns fast redirect to `/rahmat` (do not wait for Bitrix/CAPI network roundtrip).
+
+## Pixel + CAPI dedupe
+
+- Pixel: global `PageView` on all pages (if `META_PIXEL_ID` is set).
+- Browser conversion event: `fbq('track', 'Lead', {}, { eventID: 'lead.<lead_id>' })` on form submit.
+- Server conversion event (CAPI): same event name `Lead` and same `event_id` format `lead.<lead_id>`.
+- This allows Meta to deduplicate browser/server duplicates and keep conversion counts accurate.
 
 4. `POST /api/internal/bitrix-retry`
 - Internal retry processor for failed Bitrix sync and Meta CAPI outbox events.
@@ -59,6 +68,15 @@ Additional sync metadata is stored under `sync` to support retries and idempoten
 - Failed syncs are queued in Redis sorted set `lead:bitrix:retry`.
 - Score is next retry timestamp in ms.
 - Meta CAPI retries are stored durably in PostgreSQL table `meta_capi_events` (`pending/failed/success` with backoff).
+- `retry-cron` worker triggers processing every 5 seconds for near-real-time eventual delivery.
+
+## Public pages
+
+- Form page: `/forma`
+- Thank-you page: `/rahmat`
+- Legacy compatibility:
+  - `/sinov-darsiga-yozilish` -> permanent redirect to `/forma`
+  - `/submission-success` -> permanent redirect to `/rahmat`
 
 ## Docker
 
@@ -69,6 +87,6 @@ docker compose up -d --build
 ```
 
 Services:
-- `app` on `:3000`
+- `app` on `${HOST_PORT:-5000}` (container listens on `5000`)
 - `postgres` with persistent volume
 - `redis` with AOF enabled

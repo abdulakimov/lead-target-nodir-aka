@@ -12,6 +12,7 @@ export type MetaLeadPayload = {
 
 export type WebsiteLeadData = {
   lead_id: string;
+  external_click_id?: string;
   parent_name: string;
   phone: string;
   child_age: string;
