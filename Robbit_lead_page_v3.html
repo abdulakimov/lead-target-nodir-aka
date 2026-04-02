@@ -1,0 +1,932 @@
+﻿<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Robbit Akademiyasi | Robototexnika va Dasturlash (6-15 yosh)</title>
+  <meta name="description" content="6-15 yosh bolalar uchun robototexnika va dasturlash kurslari. Bepul sinov darsiga yoziling, eng yaqin filial va narxni bilib oling." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f9ff;
+      --surface: #ffffff;
+      --text: #0d2238;
+      --muted: #4c6278;
+      --line: #d7e5f4;
+      --brand: #1d93e8;
+      --brand-dark: #1479c5;
+      --brand-soft: #e7f4ff;
+      --accent: #ffb703;
+      --radius: 18px;
+      --radius-xl: 28px;
+      --shadow: 0 12px 40px rgba(16, 53, 86, 0.12);
+      --container: 1140px;
+      --font: "Manrope", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(circle at 85% -10%, #c9e8ff 0%, rgba(201, 232, 255, 0) 42%),
+        radial-gradient(circle at -10% 10%, #dff1ff 0%, rgba(223, 241, 255, 0) 40%),
+        var(--bg);
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: min(var(--container), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .site-header {
+      position: static;
+      backdrop-filter: blur(8px);
+      background: rgba(244, 249, 255, 0.88);
+      border-bottom: 1px solid rgba(215, 229, 244, 0.75);
+    }
+
+    .site-header-inner {
+      height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .logo img {
+      width: auto;
+      height: 42px;
+      display: block;
+    }
+
+    .cta,
+    .cta:visited {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      text-decoration: none;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 16px;
+      padding: 14px 26px;
+      color: #fff;
+      background: var(--brand);
+      box-shadow: 0 10px 24px rgba(29, 147, 232, 0.3);
+      transition: transform 0.18s ease, box-shadow 0.2s ease, background 0.2s ease;
+      cursor: pointer;
+      font-family: var(--font);
+      white-space: nowrap;
+    }
+
+    .cta:hover {
+      transform: translateY(-1px);
+      background: var(--brand-dark);
+      box-shadow: 0 14px 28px rgba(20, 121, 197, 0.34);
+    }
+
+    .hero {
+      padding: 54px 0 28px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 26px;
+      align-items: stretch;
+    }
+
+    .hero-copy,
+    .lead-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-copy {
+      padding: 34px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-copy::after {
+      content: "";
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 183, 3, 0.2) 0%, rgba(255, 183, 3, 0) 65%);
+      right: -70px;
+      top: -80px;
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      background: var(--brand-soft);
+      border: 1px solid #cbe5ff;
+      color: var(--brand-dark);
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: clamp(30px, 4.4vw, 52px);
+      line-height: 1.08;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+      max-width: 16ch;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 17px;
+      margin-bottom: 18px;
+      max-width: 54ch;
+    }
+
+    .proof-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-bottom: 18px;
+    }
+
+    .proof-chip {
+      background: #f1f7fe;
+      border: 1px solid #d2e4f6;
+      color: #244864;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .lead-card {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .lead-card h2 {
+      font-size: clamp(24px, 3.2vw, 34px);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+
+    .lead-note {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    .lead-form {
+      display: grid;
+      gap: 10px;
+    }
+
+    .input,
+    .select {
+      width: 100%;
+      border: 1px solid #c9deef;
+      border-radius: 14px;
+      font: inherit;
+      font-size: 15px;
+      padding: 13px 14px;
+      color: var(--text);
+      background: #fff;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .input:focus,
+    .select:focus {
+      outline: none;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 4px rgba(29, 147, 232, 0.15);
+    }
+
+    .cta-wide {
+      width: 100%;
+      min-height: 54px;
+      font-size: 18px;
+      margin-top: 4px;
+    }
+
+    .micro {
+      color: #607389;
+      font-size: 12px;
+      line-height: 1.4;
+      margin-top: 8px;
+    }
+
+    .signal-bar {
+      background: #e9f5ff;
+      border-top: 1px solid #d7e8f9;
+      border-bottom: 1px solid #d7e8f9;
+      margin-top: 26px;
+    }
+
+    .signal-inner {
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px 18px;
+      padding: 10px 0;
+    }
+
+    .signal-item {
+      color: #35506a;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .section {
+      padding: 64px 0;
+    }
+
+    .section-title {
+      font-size: clamp(24px, 3.4vw, 42px);
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      max-width: 20ch;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      max-width: 64ch;
+      margin-bottom: 28px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: 0 6px 20px rgba(24, 63, 99, 0.06);
+    }
+
+    .card h3 {
+      font-size: 19px;
+      margin-bottom: 7px;
+      line-height: 1.2;
+    }
+
+    .card p,
+    .card li {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .card ul {
+      list-style: none;
+      margin-top: 10px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .card li::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--brand);
+      display: inline-block;
+      margin-right: 8px;
+      transform: translateY(-1px);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      counter-reset: step;
+    }
+
+    .step {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+      position: relative;
+    }
+
+    .step::before {
+      counter-increment: step;
+      content: "0" counter(step);
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font-size: 26px;
+      font-weight: 800;
+      color: #d7e8f8;
+    }
+
+    .step h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+      max-width: 17ch;
+    }
+
+    .reviews-wrap {
+      background: #eef3f8;
+    }
+
+    .reviews-tag {
+      display: inline-block;
+      background: #c7e9d6;
+      color: #0a9550;
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .review-card {
+      background: #f8fbff;
+      border: 1px solid #c7d7e8;
+      border-radius: 22px;
+      padding: 24px 24px 22px;
+      box-shadow: 0 2px 8px rgba(17, 56, 89, 0.04);
+    }
+
+    .review-mark {
+      font-size: 34px;
+      line-height: 1;
+      color: #1fc35d;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .review-text {
+      font-size: 16px;
+      color: #3b566f;
+      font-style: italic;
+      line-height: 1.55;
+      margin-bottom: 16px;
+    }
+
+    .review-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .review-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #bfe7d0;
+      color: #079d54;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 800;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .review-name {
+      font-size: 18px;
+      font-weight: 800;
+      color: #18212f;
+      line-height: 1.2;
+    }
+
+    .review-handle {
+      color: #7388a0;
+      font-size: 14px;
+      line-height: 1.35;
+      margin-top: 2px;
+    }
+
+    .faq {
+      display: grid;
+      gap: 10px;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      border: 1px solid #d0e3f4;
+      border-radius: 14px;
+      background: #fff;
+      overflow: clip;
+    }
+
+    .faq-btn {
+      width: 100%;
+      text-align: left;
+      border: 0;
+      background: #fff;
+      font: inherit;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text);
+      padding: 15px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .faq-btn span {
+      margin-left: 8px;
+      color: var(--brand);
+      font-size: 24px;
+      line-height: 1;
+      transition: transform 0.2s ease;
+    }
+
+    .faq-content {
+      max-height: 0;
+      overflow: hidden;
+      color: var(--muted);
+      transition: max-height 0.24s ease;
+      font-size: 15px;
+      padding: 0 16px;
+    }
+
+    .faq-item.open .faq-content {
+      max-height: 220px;
+      padding-bottom: 14px;
+    }
+
+    .faq-item.open .faq-btn span {
+      transform: rotate(45deg);
+    }
+
+    .final {
+      padding: 40px 0 96px;
+    }
+
+    .lead-bottom {
+      display: none;
+    }
+
+    .final-box {
+      border-radius: var(--radius-xl);
+      border: 1px solid #bcdcf7;
+      background: linear-gradient(140deg, #edf7ff 0%, #d9edff 100%);
+      padding: 34px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .final-box h2 {
+      font-size: clamp(26px, 4vw, 44px);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+
+    .final-box p {
+      color: #355673;
+      max-width: 55ch;
+      margin: 0 auto 20px;
+    }
+
+    .phone-line {
+      margin-top: 14px;
+      color: #355673;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .phone-line a {
+      color: #0f6daf;
+      text-decoration: none;
+    }
+
+    .floating {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 60;
+      background: rgba(13, 34, 56, 0.94);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 14px;
+      display: none;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .floating p {
+      color: #eaf5ff;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .floating .cta {
+      padding: 12px 16px;
+      font-size: 14px;
+      box-shadow: none;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cards,
+      .steps,
+      .reviews-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .container {
+        width: min(var(--container), calc(100% - 20px));
+      }
+
+      .site-header-inner {
+        height: 66px;
+      }
+
+      .site-header .cta {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 18px;
+      }
+
+      .hero-copy,
+      .lead-card,
+      .final-box {
+        padding: 20px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .cards,
+      .steps,
+      .reviews-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 46px 0;
+      }
+
+      .final {
+        padding-bottom: 86px;
+      }
+
+      .lead-bottom {
+        display: block;
+        padding-top: 0;
+      }
+
+      .floating {
+        display: flex;
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-copy,
+      .lead-card,
+      .card,
+      .step,
+      .review-card,
+      .final-box {
+        animation: rise 0.55s ease both;
+      }
+
+      .lead-card { animation-delay: 0.07s; }
+      .cards .card:nth-child(2),
+      .steps .step:nth-child(2),
+      .reviews-grid .review-card:nth-child(2) { animation-delay: 0.09s; }
+      .cards .card:nth-child(3),
+      .steps .step:nth-child(3),
+      .reviews-grid .review-card:nth-child(3) { animation-delay: 0.16s; }
+
+      @keyframes rise {
+        from { opacity: 0; transform: translateY(14px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header-inner">
+      <a class="logo" href="#top" aria-label="Robbit bosh sahifa">
+        <img src="Robbit_transparent.png" alt="Robbit Akademiyasi" />
+      </a>
+      <a class="cta" href="#lead-form">Dastur bilan tanishish</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <article class="hero-copy">
+          <span class="eyebrow">Robototexnika va Dasturlash 6-15 yosh</span>
+          <h1>Bolangiz 2 oy ichida birinchi robot yoki dastur loyihasini taqdim etadi.</h1>
+          <p>Robbit Akademiyasida bolalar faqat nazariya emas, amaliy natija oladi. Siz esa bepul sinov darsidan keyin eng mos guruh, jadval va narx bo'yicha aniq qaror qilasiz.</p>
+          <div class="proof-row" aria-label="Ishonch ko'rsatkichlari">
+            <span class="proof-chip">2000+ faol o'quvchi</span>
+            <span class="proof-chip">8 yillik tajriba</span>
+            <span class="proof-chip">Kichik guruhlar</span>
+            <span class="proof-chip">Demo Day har 2 oyda</span>
+          </div>
+          <a class="cta" href="#lead-form">Bepul sinov darsiga yozilish</a>
+        </article>
+
+        <div id="leadCardDesktopMount">
+        <aside class="lead-card" id="lead-form" data-lead-card="true">
+          <h2>Sinov darsiga yozilish</h2>
+          <p class="lead-note">Formani to'ldiring. Administrator 15 daqiqa ichida bog'lanadi.</p>
+          <form class="lead-form" action="YOUR_FORM_LINK_HERE" method="post">
+            <label class="sr-only" for="parentName">Ismingiz</label>
+            <input class="input" id="parentName" name="parent_name" type="text" placeholder="Ota-ona ismi" required />
+
+            <label class="sr-only" for="phone">Telefon raqami</label>
+            <input class="input" id="phone" name="phone" type="tel" placeholder="+998 XX XXX XX XX" required />
+
+            <label class="sr-only" for="childAge">Bola yoshi</label>
+            <select class="select" id="childAge" name="child_age" required>
+              <option value="" disabled selected>Bola yoshi</option>
+              <option value="6-8">6-8 yosh</option>
+              <option value="9-11">9-11 yosh</option>
+              <option value="12-15">12-15 yosh</option>
+            </select>
+
+            <label class="sr-only" for="branch">Filial</label>
+            <input class="input" id="branch" name="preferred_branch" type="text" placeholder="Shahar yoki tuman" required />
+
+            <button class="cta cta-wide" type="submit">Sinov darsiga yozilish</button>
+            <p class="micro">Yuborish orqali sizga qo'ng'iroq qilishimizga rozilik bildirasiz.</p>
+          </form>
+        </aside>
+        </div>
+      </div>
+
+      <div class="signal-bar">
+        <div class="container signal-inner">
+          <span class="signal-item">Haftasiga 2 dars</span>
+          <span class="signal-item">Amaliy loyiha asosida ta'lim</span>
+          <span class="signal-item">Narx filialga qarab moslashadi</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Yoshga mos yo'nalishlar</h2>
+        <p class="section-sub">Har bir bosqich bolalarning qiziqishi va qobiliyatiga mos tuzilgan. Yo'nalishlar oddiydan murakkabga qarab o'sadi.</p>
+        <div class="cards">
+          <article class="card">
+            <h3>Junior (6-8 yosh)</h3>
+            <p>Texnologiyaga birinchi qadam: mantiq, algoritmik fikrlash va oddiy robot yig'ish.</p>
+            <ul>
+              <li>Scratch Jr va visual coding</li>
+              <li>Lego asoslari</li>
+              <li>Ijodiy mini-loyihalar</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Kids (9-11 yosh)</h3>
+            <p>Robototexnika va dasturlashdan birini tanlab chuqurroq rivojlanish.</p>
+            <ul>
+              <li>Spike va Arduino kirish</li>
+              <li>Web va bot asoslari</li>
+              <li>Portfolio loyihalar</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Teens (12-15 yosh)</h3>
+            <p>Kelajak kasbiga yaqinlashish: real loyihalar, jamoa va taqdimot.</p>
+            <ul>
+              <li>Python va IoT</li>
+              <li>AI va avtomatlashtirish asoslari</li>
+              <li>GitHub uchun loyiha tajribasi</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Qanday boshlaysiz</h2>
+        <p class="section-sub">Maksimal sodda jarayon: ro'yxatdan o'tishdan birinchi amaliy darsgacha.</p>
+        <div class="steps">
+          <article class="step">
+            <h3>Ariza qoldiring</h3>
+            <p>Ism va telefon yetarli. Operator eng yaqin filial va bo'sh guruhlarni tekshiradi.</p>
+          </article>
+          <article class="step">
+            <h3>Bepul sinov darsida qatnashing</h3>
+            <p>Bolangiz dars formatini ko'radi va qiziqishiga mos yo'nalishni tanlaydi.</p>
+          </article>
+          <article class="step">
+            <h3>Mos guruhga start bering</h3>
+            <p>Jadval, narx va o'quv rejasi tasdiqlanadi. Keyin muntazam darslar boshlanadi.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reviews-wrap">
+      <div class="container">
+        <span class="reviews-tag">Ota-onalar fikri</span>
+        <h2 class="section-title">Ular nima deydi?</h2>
+        <p class="section-sub">Bu so'zlar Instagram sahifamizdan olingan — hech qanday o'zgartirishsiz.</p>
+        <div class="reviews-grid">
+          <article class="review-card">
+            <div class="review-mark">"</div>
+            <p class="review-text">Dim zor meni bolom kun sanidi qachon yakshanba keladi qachon robbitga boraman deb yakshanba kuni ertalab 6 da uygonadi kech qomadikmi deb</p>
+            <div class="review-author">
+              <div class="review-avatar">B</div>
+              <div>
+                <div class="review-name">bekbergenovaoygul</div>
+                <div class="review-handle">@bekbergenovaoygul · Instagram</div>
+              </div>
+            </div>
+          </article>
+          <article class="review-card">
+            <div class="review-mark">"</div>
+            <p class="review-text">Manam robbitda 2025 yil avgustdan beri oqiyman ozgarishlar juda katta kelishlarini tavsiya qilaman</p>
+            <div class="review-author">
+              <div class="review-avatar">Z</div>
+              <div>
+                <div class="review-name">ziyo.dullayev210</div>
+                <div class="review-handle">@ziyo.dullayev210 · Instagram</div>
+              </div>
+            </div>
+          </article>
+          <article class="review-card">
+            <div class="review-mark">"</div>
+            <p class="review-text">Judoam zur Robbit akademiya, meni nevaram boradi. Malimlar judoam zur tushuntiradi</p>
+            <div class="review-author">
+              <div class="review-avatar">M</div>
+              <div>
+                <div class="review-name">mironshokhmokhinur</div>
+                <div class="review-handle">@mironshokhmokhinur · Instagram</div>
+              </div>
+            </div>
+          </article>
+          <article class="review-card">
+            <div class="review-mark">"</div>
+            <p class="review-text">Meni o'g'lim boryabdi 1oy bo'ldi qoyil uztozlarini odobi bir biridan chiroyli bolalarni xamma ustozlari sizlab murojat qilishadi dars esa juda qiziqarli bo'lyabdi. Raxmat Robbitga.</p>
+            <div class="review-author">
+              <div class="review-avatar">S</div>
+              <div>
+                <div class="review-name">_sarv1noz_94</div>
+                <div class="review-handle">@_sarv1noz_94 · Instagram</div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title" style="margin-left:auto;margin-right:auto;text-align:center;">Ko'p so'raladigan savollar</h2>
+        <div class="faq" id="faq">
+          <article class="faq-item">
+            <button class="faq-btn" type="button">Tajriba bo'lmasa ham bo'ladimi? <span>+</span></button>
+            <div class="faq-content">Ha. Dastur noldan boshlab o'rgatadi. Har yosh uchun mos bosqich mavjud.</div>
+          </article>
+          <article class="faq-item">
+            <button class="faq-btn" type="button">Sinov darsi pullikmi? <span>+</span></button>
+            <div class="faq-content">Yo'q. Birinchi dars bepul va majburiyatsiz. Maqsad - bola uchun mos yo'nalishni topish.</div>
+          </article>
+          <article class="faq-item">
+            <button class="faq-btn" type="button">Dars jadvali qanday? <span>+</span></button>
+            <div class="faq-content">Odatda haftasiga 2 marotaba. Aniq vaqt filial va guruh bo'yicha tanlanadi.</div>
+          </article>
+          <article class="faq-item">
+            <button class="faq-btn" type="button">Filiallar qayerlarda bor? <span>+</span></button>
+            <div class="faq-content">Toshkent va boshqa shahar/tumanlarda filiallar mavjud. Formadan so'ng sizga eng yaqin manzil aytiladi.</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="final">
+      <div class="container">
+        <div class="final-box">
+          <h2>Aprel guruhiga joy band qiling</h2>
+          <p>Bugun formani yuboring, administrator sizga dastur, narx va jadval bo'yicha qisqa konsultatsiya qiladi.</p>
+          <a class="cta" href="#lead-form">Dastur bilan tanishish</a>
+          <div class="phone-line">Yoki telefon orqali: <a href="tel:+998787773777">+998 78 777 37 77</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section lead-bottom" aria-label="Sinov darsiga yozilish formasi">
+      <div class="container" id="leadCardMobileMount"></div>
+    </section>
+  </main>
+
+  <div class="floating" id="floatingBar">
+    <p>Bepul sinov darsi uchun joylar cheklangan</p>
+    <a class="cta" href="#lead-form">Yozilish</a>
+  </div>
+
+  <script>
+    const leadCard = document.querySelector('[data-lead-card=\"true\"]');
+    const leadCardDesktopMount = document.getElementById('leadCardDesktopMount');
+    const leadCardMobileMount = document.getElementById('leadCardMobileMount');
+
+    const placeLeadCard = () => {
+      if (!leadCard || !leadCardDesktopMount || !leadCardMobileMount) return;
+      if (window.innerWidth <= 700) {
+        if (leadCard.parentElement !== leadCardMobileMount) leadCardMobileMount.appendChild(leadCard);
+      } else {
+        if (leadCard.parentElement !== leadCardDesktopMount) leadCardDesktopMount.appendChild(leadCard);
+      }
+    };
+
+    placeLeadCard();
+
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach((item) => {
+      item.querySelector('.faq-btn').addEventListener('click', () => {
+        const isOpen = item.classList.contains('open');
+        faqItems.forEach((el) => el.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+
+    const leadForm = document.getElementById('lead-form');
+    const floatingBar = document.getElementById('floatingBar');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        floatingBar.style.display = entry.isIntersecting ? 'none' : window.innerWidth <= 700 ? 'flex' : 'none';
+      });
+    }, { threshold: 0.2 });
+
+    if (leadForm) io.observe(leadForm);
+
+    window.addEventListener('resize', () => {
+      placeLeadCard();
+      if (window.innerWidth > 700) floatingBar.style.display = 'none';
+    });
+  </script>
+</body>
+</html>

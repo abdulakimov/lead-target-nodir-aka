@@ -1,0 +1,238 @@
+.admin-wrap {
+  min-height: 100vh;
+  padding: 16px;
+  background: #e7f0fa;
+}
+
+.admin-login-card,
+.admin-shell {
+  width: min(1280px, 100%);
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid #d5e3f1;
+  border-radius: 20px;
+  padding: 18px;
+}
+
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.admin-login-card h1,
+.admin-topbar h1 {
+  font-size: clamp(30px, 5vw, 58px);
+  line-height: 1.08;
+}
+
+.admin-sub {
+  color: #5f778f;
+  margin: 8px 0 14px;
+}
+
+.admin-ok,
+.admin-err {
+  font-size: 14px;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.admin-ok {
+  color: #0d8e4e;
+}
+
+.admin-err {
+  color: #c73939;
+}
+
+.admin-login-form {
+  margin-top: 8px;
+  display: grid;
+  gap: 8px;
+}
+
+.admin-login-form label {
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+.admin-login-form input,
+.admin-login-form button,
+.admin-ghost-btn,
+.admin-save-btn,
+.edit-pen,
+.admin-edit-pop input,
+.admin-edit-pop textarea,
+.admin-edit-pop button {
+  font: inherit;
+}
+
+.admin-login-form input {
+  border: 1px solid #c4d8ea;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.admin-login-form button,
+.admin-save-btn {
+  margin-top: 10px;
+  border: 0;
+  border-radius: 12px;
+  background: #1d93e8;
+  color: #fff;
+  padding: 12px 16px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.admin-ghost-btn {
+  border: 1px solid #bad3e9;
+  border-radius: 10px;
+  background: #f3f9ff;
+  color: #1e5f93;
+  padding: 8px 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-live-preview {
+  border-radius: 18px;
+  border: 1px solid #d2e3f3;
+  background: #dbeaf8;
+  padding-top: 6px;
+  margin-bottom: 12px;
+}
+
+.admin-live-preview .container {
+  width: min(1120px, calc(100% - 24px));
+}
+
+.admin-edit-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-edit-wrap:has(.hero-desc),
+.admin-edit-wrap:has(.section-sub),
+.admin-edit-wrap:has(.review-text),
+.admin-edit-wrap:has(.micro) {
+  align-items: flex-start;
+}
+
+.edit-pen {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid #b7d3ec;
+  background: #f5faff;
+  color: #176eb4;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.admin-h1 {
+  margin: 10px 0;
+}
+
+.hero-desc {
+  display: inline;
+}
+
+.admin-inline-strong {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.admin-input-mock {
+  display: inline-flex;
+  min-width: min(420px, 100%);
+}
+
+.admin-cta-mock {
+  pointer-events: none;
+}
+
+.faq-content.open-content {
+  max-height: none;
+  padding-bottom: 14px;
+}
+
+.floating-force-show {
+  position: static;
+  margin: 10px 12px 14px;
+  border-radius: 12px;
+}
+
+.admin-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.admin-edit-pop {
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 30, 45, 0.36);
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+
+.admin-edit-pop-card {
+  width: min(760px, 100%);
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #c4d8ea;
+  padding: 14px;
+}
+
+.admin-edit-path {
+  font-size: 12px;
+  color: #6a7f95;
+  margin-bottom: 8px;
+}
+
+.admin-edit-pop input,
+.admin-edit-pop textarea {
+  width: 100%;
+  border: 1px solid #c4d8ea;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.admin-edit-pop-actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.admin-edit-pop-actions button {
+  border: 1px solid #bad3e9;
+  border-radius: 10px;
+  background: #f5faff;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+@media (max-width: 820px) {
+  .admin-live-preview .container {
+    width: min(1120px, calc(100% - 16px));
+  }
+
+  .admin-inline-strong {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-input-mock {
+    min-width: 100%;
+  }
+}

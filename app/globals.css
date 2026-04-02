@@ -1,0 +1,18 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: radial-gradient(circle at 85% -10%, #c9e8ff 0%, rgba(201, 232, 255, 0) 42%),
+    radial-gradient(circle at -10% 10%, #dff1ff 0%, rgba(223, 241, 255, 0) 40%), #f4f9ff;
+}
+
+a {
+  color: inherit;
+}

@@ -1,0 +1,1132 @@
+[
+  {
+    "code": "ADDRESS",
+    "title": "Адрес",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "ADDRESS_2",
+    "title": "Адрес (стр. 2)",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "ADDRESS_CITY",
+    "title": "Город",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "ADDRESS_COUNTRY",
+    "title": "Страна",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "ADDRESS_COUNTRY_CODE",
+    "title": "Код страны",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "ADDRESS_LOC_ADDR_ID",
+    "title": "Идентификатор адреса местоположения",
+    "type": "integer",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "ADDRESS_POSTAL_CODE",
+    "title": "Почтовый индекс",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "ADDRESS_PROVINCE",
+    "title": "Область",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "ADDRESS_REGION",
+    "title": "Район",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "ASSIGNED_BY_ID",
+    "title": "Ответственный",
+    "type": "user",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "BIRTHDATE",
+    "title": "Дата рождения",
+    "type": "date",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "COMMENTS",
+    "title": "Комментарий",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "COMPANY_ID",
+    "title": "Компания",
+    "type": "crm_company",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "COMPANY_TITLE",
+    "title": "Название компании",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "CONTACT_ID",
+    "title": "Контакт",
+    "type": "crm_contact",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "CONTACT_IDS",
+    "title": "CONTACT_IDS",
+    "type": "crm_contact",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": true,
+    "enumCount": 0
+  },
+  {
+    "code": "CREATED_BY_ID",
+    "title": "Кем создан",
+    "type": "user",
+    "required": false,
+    "readOnly": true,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "CURRENCY_ID",
+    "title": "Валюта",
+    "type": "crm_currency",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "DATE_CLOSED",
+    "title": "Дата завершения",
+    "type": "datetime",
+    "required": false,
+    "readOnly": true,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "DATE_CREATE",
+    "title": "Дата создания",
+    "type": "datetime",
+    "required": false,
+    "readOnly": true,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "DATE_MODIFY",
+    "title": "Дата изменения",
+    "type": "datetime",
+    "required": false,
+    "readOnly": true,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "EMAIL",
+    "title": "E-mail",
+    "type": "crm_multifield",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": true,
+    "enumCount": 0
+  },
+  {
+    "code": "HAS_EMAIL",
+    "title": "Задан e-mail",
+    "type": "char",
+    "required": false,
+    "readOnly": true,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "HAS_IMOL",
+    "title": "Задана открытая линия",
+    "type": "char",
+    "required": false,
+    "readOnly": true,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "HAS_PHONE",
+    "title": "Задан телефон",
+    "type": "char",
+    "required": false,
+    "readOnly": true,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "HONORIFIC",
+    "title": "Обращение",
+    "type": "crm_status",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "ID",
+    "title": "ID",
+    "type": "integer",
+    "required": false,
+    "readOnly": true,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "IM",
+    "title": "Мессенджер",
+    "type": "crm_multifield",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": true,
+    "enumCount": 0
+  },
+  {
+    "code": "IS_MANUAL_OPPORTUNITY",
+    "title": "IS_MANUAL_OPPORTUNITY",
+    "type": "char",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "IS_RETURN_CUSTOMER",
+    "title": "Повторный лид",
+    "type": "char",
+    "required": false,
+    "readOnly": true,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "LAST_ACTIVITY_BY",
+    "title": "LAST_ACTIVITY_BY",
+    "type": "user",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "LAST_ACTIVITY_TIME",
+    "title": "LAST_ACTIVITY_TIME",
+    "type": "datetime",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "LAST_COMMUNICATION_TIME",
+    "title": "LAST_COMMUNICATION_TIME",
+    "type": "string",
+    "required": false,
+    "readOnly": true,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "LAST_NAME",
+    "title": "Фамилия",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "LINK",
+    "title": "LINK",
+    "type": "crm_multifield",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": true,
+    "enumCount": 0
+  },
+  {
+    "code": "MODIFY_BY_ID",
+    "title": "Кем изменен",
+    "type": "user",
+    "required": false,
+    "readOnly": true,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "MOVED_BY_ID",
+    "title": "MOVED_BY_ID",
+    "type": "user",
+    "required": false,
+    "readOnly": true,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "MOVED_TIME",
+    "title": "MOVED_TIME",
+    "type": "datetime",
+    "required": false,
+    "readOnly": true,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "NAME",
+    "title": "Имя",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "OPENED",
+    "title": "Доступен для всех",
+    "type": "char",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "OPPORTUNITY",
+    "title": "Сумма",
+    "type": "double",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "ORIGIN_ID",
+    "title": "Идентификатор элемента во внешнем источнике",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "ORIGINATOR_ID",
+    "title": "Внешний источник",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "PHONE",
+    "title": "Телефон",
+    "type": "crm_multifield",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": true,
+    "enumCount": 0
+  },
+  {
+    "code": "POST",
+    "title": "Должность",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "SECOND_NAME",
+    "title": "Отчество",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "SOURCE_DESCRIPTION",
+    "title": "Дополнительно об источнике",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "SOURCE_ID",
+    "title": "Источник",
+    "type": "crm_status",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "STATUS_DESCRIPTION",
+    "title": "Дополнительно о стадии",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "STATUS_ID",
+    "title": "Стадия",
+    "type": "crm_status",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "STATUS_SEMANTIC_ID",
+    "title": "Состояние статуса",
+    "type": "string",
+    "required": false,
+    "readOnly": true,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "TITLE",
+    "title": "Название лида",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1716207144274",
+    "title": "Yoshi",
+    "type": "double",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1717142154639",
+    "title": "Boshqa viloyatdan",
+    "type": "enumeration",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": true,
+    "enumCount": 21
+  },
+  {
+    "code": "UF_CRM_1717220418",
+    "title": "*Дата первого закрытия лида",
+    "type": "datetime",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1717744076020",
+    "title": "Toshkent  va viloyat tumanlari ",
+    "type": "enumeration",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 21
+  },
+  {
+    "code": "UF_CRM_1721732964377",
+    "title": "Filialini tanlang:",
+    "type": "enumeration",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 13
+  },
+  {
+    "code": "UF_CRM_1725535929781",
+    "title": "Robbit haqida malumotni qayerdan olgan? ",
+    "type": "enumeration",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 10
+  },
+  {
+    "code": "UF_CRM_1725860990363",
+    "title": "Maktabda o'qish vaqti qanday?",
+    "type": "enumeration",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 4
+  },
+  {
+    "code": "UF_CRM_1727904923821",
+    "title": "Filialni tanlang (Target uchun)",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1737032134000",
+    "title": "Bog'lanib bo'lmaganga chiqib ketish sababi",
+    "type": "enumeration",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 3
+  },
+  {
+    "code": "UF_CRM_1737032396081",
+    "title": "SPAMga chiqish sababi",
+    "type": "enumeration",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 6
+  },
+  {
+    "code": "UF_CRM_1737111036287",
+    "title": "Ko'p o'ylayaptiga chiqib ketish sababi:",
+    "type": "enumeration",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 10
+  },
+  {
+    "code": "UF_CRM_1737370829",
+    "title": "*Дата первого контакта",
+    "type": "datetime",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1742461360163",
+    "title": "Ehtimollik foizi",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1742461541159",
+    "title": "Qo'yilgan foizga izoh",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1744289643679",
+    "title": "Summary 1",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1744289699502",
+    "title": "Summary 2",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1744289707567",
+    "title": "Summary 3",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1745212120",
+    "title": "Referal qildanning ID raqami",
+    "type": "integer",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1745212150",
+    "title": "Referal qildanning to'liq ismi",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1747228773",
+    "title": "Sayt sahifa nomi",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1750236334688",
+    "title": "Telegram username (telegramdan yozish uchun)",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1750236853562",
+    "title": "Yosh chegarasi (telegram bot)",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1754657926",
+    "title": "Birinchi mas'ul",
+    "type": "employee",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1755271327493",
+    "title": "Область 1",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1755271336732",
+    "title": "Город 1",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1755271345140",
+    "title": "Область 2",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1755271353319",
+    "title": "Город 2",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1755274753986",
+    "title": "Shaharni tanlang",
+    "type": "rest_87_regions_and_cities_1",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1755274762133",
+    "title": "Область и город 2",
+    "type": "rest_87_regions_and_cities_2",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1760698377",
+    "title": "Form ID",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1760698492",
+    "title": "Form Name",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1760698508",
+    "title": "Lead ID",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1760698528",
+    "title": "Ad ID",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1760698586",
+    "title": "Campaign ID",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1760698600",
+    "title": "Ad Set ID",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1760698636",
+    "title": "Platform",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1760699382",
+    "title": "Birthday",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1760957904",
+    "title": "Qo'shimcha raqam",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1761973332901",
+    "title": "Boshqa raqamini kiriting",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1762841670016",
+    "title": "Bizda yo'q kurs",
+    "type": "enumeration",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 5
+  },
+  {
+    "code": "UF_CRM_1765358538304",
+    "title": "ТЕХН - номер",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1765477675489",
+    "title": "Manzil qulaymi (Jiddi)",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1765477720905",
+    "title": "Farzandining Yoshi (Jiddi)",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1766582926922",
+    "title": "Aynan nima sababdan filtrdan o'tmagan ",
+    "type": "enumeration",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 5
+  },
+  {
+    "code": "UF_CRM_1768210830319",
+    "title": "Qaysi sanada o'qishni boshlamoqchi  ",
+    "type": "date",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_1769749720722",
+    "title": "Yo'nalishni tanlang ",
+    "type": "enumeration",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 2
+  },
+  {
+    "code": "UF_CRM_1772259939",
+    "title": "Filialda kim kutib oldi",
+    "type": "employee",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_COOKIES",
+    "title": "cookies",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_FILIAL",
+    "title": "filial",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_FILIALNITANLA",
+    "title": "Filialni_tanlang",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_FORMNAME",
+    "title": "formname",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_QAYSIKURSDAOQ",
+    "title": "Qaysi_kursda_oqimoqchisiz",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_TRANID",
+    "title": "tranid",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_UTMID",
+    "title": "utm_id",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UF_CRM_YOSH",
+    "title": "yosh",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": true,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UTM_CAMPAIGN",
+    "title": "Обозначение рекламной кампании",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UTM_CONTENT",
+    "title": "Содержание кампании",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UTM_MEDIUM",
+    "title": "Тип трафика",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UTM_SOURCE",
+    "title": "Рекламная система",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "UTM_TERM",
+    "title": "Условие поиска кампании",
+    "type": "string",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": false,
+    "enumCount": 0
+  },
+  {
+    "code": "WEB",
+    "title": "Сайт",
+    "type": "crm_multifield",
+    "required": false,
+    "readOnly": false,
+    "dynamic": false,
+    "multiple": true,
+    "enumCount": 0
+  }
+]

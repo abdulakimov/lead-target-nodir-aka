@@ -1,0 +1,93 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: robbit-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      ADMIN_LOGIN: ${ADMIN_LOGIN:-admin}
+      ADMIN_PASSWORD_HASH: ${ADMIN_PASSWORD_HASH:-}
+      REDIS_URL: redis://redis:6379
+      POSTGRES_URL: postgresql://robbit:robbit_password@postgres:5432/robbit
+      META_VERIFY_TOKEN: ${META_VERIFY_TOKEN:-meta-verify-token}
+      META_APP_SECRET: ${META_APP_SECRET:-meta-app-secret}
+      META_ALLOW_UNSIGNED_WEBHOOK: ${META_ALLOW_UNSIGNED_WEBHOOK:-false}
+      META_GRAPH_VERSION: ${META_GRAPH_VERSION:-v23.0}
+      META_PIXEL_ID: ${META_PIXEL_ID:-}
+      META_CAPI_ACCESS_TOKEN: ${META_CAPI_ACCESS_TOKEN:-}
+      META_TEST_EVENT_CODE: ${META_TEST_EVENT_CODE:-}
+      BITRIX_WEBHOOK_URL: ${BITRIX_WEBHOOK_URL:-https://b24-ep81hc.bitrix24.ru/rest/1/ccw94uos74h0zy6s/}
+      INTERNAL_SYNC_SECRET: ${INTERNAL_SYNC_SECRET:-internal-retry-secret}
+      BITRIX_TIMEOUT_MS: ${BITRIX_TIMEOUT_MS:-8000}
+      BITRIX_TECH_UTM_SOURCE_FIELD: ${BITRIX_TECH_UTM_SOURCE_FIELD:-}
+      BITRIX_TECH_UTM_MEDIUM_FIELD: ${BITRIX_TECH_UTM_MEDIUM_FIELD:-}
+      BITRIX_TECH_UTM_CAMPAIGN_FIELD: ${BITRIX_TECH_UTM_CAMPAIGN_FIELD:-}
+      BITRIX_TECH_UTM_CONTENT_FIELD: ${BITRIX_TECH_UTM_CONTENT_FIELD:-}
+      BITRIX_TECH_UTM_TERM_FIELD: ${BITRIX_TECH_UTM_TERM_FIELD:-}
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://$$HOSTNAME:5000/api/health > /dev/null || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: robbit-postgres
+    environment:
+      POSTGRES_DB: robbit
+      POSTGRES_USER: robbit
+      POSTGRES_PASSWORD: robbit_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U robbit -d robbit"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: robbit-redis
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  retry-cron:
+    image: curlimages/curl:8.7.1
+    container_name: robbit-retry-cron
+    depends_on:
+      app:
+        condition: service_started
+    environment:
+      INTERNAL_SYNC_SECRET: ${INTERNAL_SYNC_SECRET:-internal-retry-secret}
+    command:
+      - sh
+      - -c
+      - |
+        while true; do
+          curl -fsS -X POST "http://app:5000/api/internal/bitrix-retry" -H "x-internal-secret: $$INTERNAL_SYNC_SECRET" >/dev/null || true;
+          sleep 60;
+        done
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
