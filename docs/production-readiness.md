@@ -20,6 +20,11 @@
 ## Security
 - Keep `META_ALLOW_UNSIGNED_WEBHOOK=false` in production.
 - Rotate `BITRIX_WEBHOOK_URL` and `INTERNAL_SYNC_SECRET` if leaked.
+- Meta Webhook callback URL must be exactly `https://lead.robbitedu.uz/api/meta/webhook`.
+- In Meta App dashboard, confirm:
+  - verify token matches `META_VERIFY_TOKEN`
+  - app is Live (or explicit test user path is configured)
+  - Page/Leadgen webhook subscription is enabled
 - Expose only:
   - `GET /api/health`
   - `POST /api/meta/webhook`

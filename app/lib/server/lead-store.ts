@@ -1,11 +1,12 @@
 import crypto from "node:crypto";
 import { getRedis } from "./redis";
 import { sendLeadToBitrix } from "./bitrix-adapter";
-import { pgGetLead, pgGetLatestLeads, pgUpsertLead } from "./postgres";
+import { pgFindLeadIdByPhone, pgGetLead, pgUpsertLead } from "./postgres";
 import type { LeadRecord, MetaLeadPayload, WebsiteLeadData } from "./types";
 
 const RETRY_ZSET_KEY = "lead:bitrix:retry";
 const LEAD_LOCK_TTL_MS = 15_000;
+const PHONE_LOCK_TTL_MS = 15_000;
 
 function leadKey(id: string): string {
   return `lead:${id}`;
@@ -13,6 +14,10 @@ function leadKey(id: string): string {
 
 function leadLockKey(id: string): string {
   return `lead:lock:${id}`;
+}
+
+function phoneLockKey(phone: string): string {
+  return `lead:phone-lock:${phone}`;
 }
 
 function nowIso(): string {
@@ -62,7 +67,7 @@ export async function readLeadRecord(id: string): Promise<LeadRecord> {
 
 async function saveRecord(record: LeadRecord): Promise<void> {
   record.updated_at = nowIso();
-  await pgUpsertLead(record.id, record);
+  await pgUpsertLead(record.id, record, latestRecordPhone(record));
   const redis = await getRedis();
   await redis.set(leadKey(record.id), JSON.stringify(record));
 }
@@ -88,6 +93,29 @@ async function withLeadLock<T>(id: string, work: () => Promise<T>): Promise<T> {
   throw new Error(`Lead lock timeout for ${id}`);
 }
 
+async function withPhoneLock<T>(phone: string, work: () => Promise<T>): Promise<T> {
+  if (!phone) return work();
+
+  const redis = await getRedis();
+  const lockKey = phoneLockKey(phone);
+  const lockValue = crypto.randomUUID();
+  const deadline = Date.now() + 10_000;
+
+  while (Date.now() < deadline) {
+    const acquired = await redis.setIfAbsent(lockKey, lockValue, PHONE_LOCK_TTL_MS);
+    if (acquired) {
+      try {
+        return await work();
+      } finally {
+        await redis.deleteIfValue(lockKey, lockValue);
+      }
+    }
+    await new Promise((resolve) => setTimeout(resolve, 60));
+  }
+
+  throw new Error(`Phone lock timeout for ${phone}`);
+}
+
 function checksumForSync(record: LeadRecord): string {
   const latestWebsite = record.website_data[record.website_data.length - 1] ?? null;
   const latestFb = record.fb_data[record.fb_data.length - 1] ?? null;
@@ -111,24 +139,23 @@ function latestWebsitePhone(record: LeadRecord): string {
   return normalizePhone(website?.phone ?? "");
 }
 
+function latestRecordPhone(record: LeadRecord): string | null {
+  const websitePhone = latestWebsitePhone(record);
+  if (websitePhone) return websitePhone;
+  const fbPhone = record.fb_data.length > 0 ? extractFbPhone(record.fb_data[record.fb_data.length - 1] as MetaLeadPayload) : "";
+  return fbPhone || null;
+}
+
+async function findLeadIdByPhone(phone: string): Promise<string | null> {
+  const normalized = normalizePhone(phone);
+  if (!normalized) return null;
+  return pgFindLeadIdByPhone(normalized);
+}
+
 async function findWebsiteLeadMatchForFbPayload(payload: MetaLeadPayload): Promise<string | null> {
   const fbPhone = extractFbPhone(payload);
   if (!fbPhone) return null;
-
-  const recent = await pgGetLatestLeads<{ id: string; payload: LeadRecord }>(200);
-  const matches = recent
-    .map((row) => row.payload)
-    .filter((record) => record.website_data.length > 0)
-    .filter((record) => record.fb_data.length === 0)
-    .filter((record) => {
-      const updatedAt = Date.parse(record.updated_at || "");
-      if (!Number.isFinite(updatedAt)) return false;
-      return Date.now() - updatedAt <= 2 * 60 * 60 * 1000;
-    })
-    .filter((record) => latestWebsitePhone(record) === fbPhone);
-
-  if (matches.length !== 1) return null;
-  return matches[0]?.id ?? null;
+  return findLeadIdByPhone(fbPhone);
 }
 
 async function scheduleRetry(id: string, seconds: number): Promise<void> {
@@ -178,37 +205,48 @@ async function trySync(record: LeadRecord): Promise<LeadRecord> {
 
 export async function upsertFbData(id: string, payload: MetaLeadPayload, enqueueSync = true): Promise<LeadRecord> {
   const cleanId = id.trim();
-  const fallbackLeadId = await findWebsiteLeadMatchForFbPayload(payload);
-  const effectiveId = fallbackLeadId || cleanId;
-  return withLeadLock(effectiveId, async () => {
-    const record = await getRecord(effectiveId);
-    record.fb_data.push(payload);
-    if (record.fb_data.length > 20) {
-      record.fb_data = record.fb_data.slice(-20);
-    }
-    record.sync.status = "pending";
-    await saveRecord(record);
-    if (enqueueSync) {
-      await enqueueLeadSync(effectiveId, 0);
-    }
-    return record;
+  const fbPhone = extractFbPhone(payload);
+  return withPhoneLock(fbPhone, async () => {
+    const fallbackLeadId = await findWebsiteLeadMatchForFbPayload(payload);
+    const effectiveId = fallbackLeadId || cleanId;
+
+    return withLeadLock(effectiveId, async () => {
+      const record = await getRecord(effectiveId);
+      record.fb_data.push(payload);
+      if (record.fb_data.length > 20) {
+        record.fb_data = record.fb_data.slice(-20);
+      }
+      record.sync.status = "pending";
+      await saveRecord(record);
+      if (enqueueSync) {
+        await enqueueLeadSync(effectiveId, 0);
+      }
+      return record;
+    });
   });
 }
 
 export async function upsertWebsiteData(id: string, payload: WebsiteLeadData, enqueueSync = true): Promise<LeadRecord> {
   const cleanId = id.trim();
-  return withLeadLock(cleanId, async () => {
-    const record = await getRecord(cleanId);
-    record.website_data.push(payload);
-    if (record.website_data.length > 20) {
-      record.website_data = record.website_data.slice(-20);
-    }
-    record.sync.status = "pending";
-    await saveRecord(record);
-    if (enqueueSync) {
-      await enqueueLeadSync(cleanId, 0);
-    }
-    return record;
+  const websitePhone = normalizePhone(payload.phone);
+
+  return withPhoneLock(websitePhone, async () => {
+    const existingByPhone = websitePhone ? await findLeadIdByPhone(websitePhone) : null;
+    const effectiveId = existingByPhone || cleanId;
+
+    return withLeadLock(effectiveId, async () => {
+      const record = await getRecord(effectiveId);
+      record.website_data.push(payload);
+      if (record.website_data.length > 20) {
+        record.website_data = record.website_data.slice(-20);
+      }
+      record.sync.status = "pending";
+      await saveRecord(record);
+      if (enqueueSync) {
+        await enqueueLeadSync(effectiveId, 0);
+      }
+      return record;
+    });
   });
 }
 

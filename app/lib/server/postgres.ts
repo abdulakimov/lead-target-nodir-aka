@@ -53,6 +53,22 @@ export async function ensurePostgresSchema(): Promise<void> {
     CREATE INDEX IF NOT EXISTS idx_leads_updated_at ON leads (updated_at DESC);
   `);
   await pool.query(`
+    ALTER TABLE leads
+    ADD COLUMN IF NOT EXISTS latest_phone TEXT NULL;
+  `);
+  await pool.query(`
+    CREATE INDEX IF NOT EXISTS idx_leads_latest_phone ON leads (latest_phone);
+  `);
+  await pool.query(`
+    UPDATE leads
+    SET latest_phone = CASE
+      WHEN regexp_replace(COALESCE(payload#>>'{website_data,-1,phone}', ''), '\D', '', 'g') = '' THEN NULL
+      WHEN regexp_replace(COALESCE(payload#>>'{website_data,-1,phone}', ''), '\D', '', 'g') LIKE '998%' THEN regexp_replace(COALESCE(payload#>>'{website_data,-1,phone}', ''), '\D', '', 'g')
+      ELSE '998' || regexp_replace(COALESCE(payload#>>'{website_data,-1,phone}', ''), '\D', '', 'g')
+    END
+    WHERE latest_phone IS NULL;
+  `);
+  await pool.query(`
     CREATE TABLE IF NOT EXISTS meta_capi_events (
       event_id TEXT PRIMARY KEY,
       payload JSONB NOT NULL,
@@ -78,18 +94,28 @@ export async function pgGetLead<T extends QueryResultRow = QueryResultRow>(id: s
   return result.rows[0] ?? null;
 }
 
-export async function pgUpsertLead(id: string, payload: unknown): Promise<void> {
+export async function pgUpsertLead(id: string, payload: unknown, latestPhone: string | null = null): Promise<void> {
   await ensurePostgresSchema();
   const pool = getPool();
   await pool.query(
     `
-      INSERT INTO leads (id, payload, updated_at)
-      VALUES ($1, $2::jsonb, NOW())
+      INSERT INTO leads (id, payload, updated_at, latest_phone)
+      VALUES ($1, $2::jsonb, NOW(), $3)
       ON CONFLICT (id)
-      DO UPDATE SET payload = EXCLUDED.payload, updated_at = NOW()
+      DO UPDATE SET payload = EXCLUDED.payload, updated_at = NOW(), latest_phone = EXCLUDED.latest_phone
     `,
-    [id, JSON.stringify(payload)],
+    [id, JSON.stringify(payload), latestPhone],
   );
+}
+
+export async function pgFindLeadIdByPhone(phone: string): Promise<string | null> {
+  await ensurePostgresSchema();
+  const pool = getPool();
+  const result = await pool.query<{ id: string }>(
+    "SELECT id FROM leads WHERE latest_phone = $1 ORDER BY updated_at DESC LIMIT 1",
+    [phone],
+  );
+  return result.rows[0]?.id ?? null;
 }
 
 export async function pgGetLatestLeads<T extends QueryResultRow = QueryResultRow>(limit = 10): Promise<T[]> {

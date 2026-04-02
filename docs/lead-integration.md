@@ -74,9 +74,6 @@ Additional sync metadata is stored under `sync` to support retries and idempoten
 
 - Form page: `/forma`
 - Thank-you page: `/rahmat`
-- Legacy compatibility:
-  - `/sinov-darsiga-yozilish` -> permanent redirect to `/forma`
-  - `/submission-success` -> permanent redirect to `/rahmat`
 
 ## Docker
 

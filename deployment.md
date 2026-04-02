@@ -79,8 +79,13 @@ docker image prune -f
 ## 7. Tekshiruv checklist
 1. `docker compose ps` da hamma container `Up`.
 2. `curl http://localhost:5000/api/health` -> `ok:true`.
-3. Form submit qilib Bitrixga lead tushishini tekshiring.
-4. Lead ichida:
+3. Meta webhook callback konfiguratsiyasini tekshiring:
+   - callback URL: `https://lead.robbitedu.uz/api/meta/webhook`
+   - verify token: `META_VERIFY_TOKEN` bilan bir xil
+   - app mode: `Live`
+   - page `leadgen` subscription: yoqilgan
+4. Form submit qilib Bitrixga lead tushishini tekshiring.
+5. Lead ichida:
    - `SOURCE_ID=UC_EH91DG`
    - `STATUS_ID=UC_57JEL9`
    - `CONTACT_ID` mavjud

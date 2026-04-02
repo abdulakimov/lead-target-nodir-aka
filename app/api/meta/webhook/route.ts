@@ -80,10 +80,29 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const requestId = crypto.randomUUID();
   const rawBody = await request.text();
   const signature = request.headers.get("x-hub-signature-256");
+  const signaturePresent = Boolean(signature);
+  const verified = verifySignature(rawBody, signature);
 
-  if (!verifySignature(rawBody, signature)) {
+  if (!verified) {
+    console.info(
+      JSON.stringify({
+        event: "meta_webhook_received",
+        request_id: requestId,
+        signature_present: signaturePresent,
+        verified: false,
+        leads_extracted: 0,
+        status: 401,
+      }),
+    );
+    console.info(
+      JSON.stringify({
+        event: "meta_webhook_invalid_signature",
+        request_id: requestId,
+      }),
+    );
     return NextResponse.json({ ok: false, error: "Invalid signature" }, { status: 401 });
   }
 
@@ -94,15 +113,37 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "Invalid JSON" }, { status: 400 });
   }
   const leads = collectLeads(json);
+  if (leads.length === 0) {
+    console.info(
+      JSON.stringify({
+        event: "meta_webhook_no_leadgen_change",
+        request_id: requestId,
+      }),
+    );
+  }
 
-  await Promise.all(
-    leads.map(async (lead) => {
-      if (!lead.id) return;
-      const safeId = sanitizeLeadId(lead.id);
-      if (!safeId) return;
-      await upsertFbData(safeId, lead);
+  const acceptedLeads = leads
+    .map((lead) => {
+      const safeId = lead.id ? sanitizeLeadId(lead.id) : "";
+      if (!safeId) return null;
+      return { safeId, lead };
+    })
+    .filter((item): item is { safeId: string; lead: MetaLeadPayload } => Boolean(item));
+
+  await Promise.all(acceptedLeads.map(async ({ safeId, lead }) => upsertFbData(safeId, lead)));
+  const accepted = acceptedLeads.length;
+
+  console.info(
+    JSON.stringify({
+      event: "meta_webhook_received",
+      request_id: requestId,
+      signature_present: signaturePresent,
+      verified: true,
+      leads_extracted: leads.length,
+      accepted,
+      status: 200,
     }),
   );
 
-  return NextResponse.json({ ok: true, accepted: leads.length });
+  return NextResponse.json({ ok: true, accepted });
 }
