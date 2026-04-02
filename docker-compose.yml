@@ -32,7 +32,7 @@ services:
       BITRIX_TECH_UTM_CONTENT_FIELD: ${BITRIX_TECH_UTM_CONTENT_FIELD:-}
       BITRIX_TECH_UTM_TERM_FIELD: ${BITRIX_TECH_UTM_TERM_FIELD:-}
     ports:
-      - "5000:5000"
+      - "${HOST_PORT:-5000}:5000"
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://$$HOSTNAME:5000/api/health > /dev/null || exit 1"]
